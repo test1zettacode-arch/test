@@ -13,7 +13,7 @@ bot = Bot('8441274720:AAG-RWg-JNaFC6hGC1aCjuFrdbqAn9tGm8Y', default=DefaultBotPr
 dp = Dispatcher()
 
 kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text='app', web_app=WebAppInfo(url=f''))],
+        [InlineKeyboardButton(text='app', web_app=WebAppInfo(url=f'https://test1zettacode-arch.github.io/test/'))],
     ])
 
 
