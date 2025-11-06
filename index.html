@@ -11,40 +11,7 @@
     <script>    
     tg = window.Telegram.WebApp;
     
-    let server_url = 'https://zettadevelop.ru/auth/'
-
-    //добавить обработку на сервере
-
-    fetch(server_url, {
-    method: "POST",
-    body: JSON.stringify({ initData: Telegram.WebApp.initData }),
-    headers: { "Content-Type": "application/json" }
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error("Ошибка сети или сервера");
-    }
-    return response.json(); // Предполагаем, что сервер возвращает JSON
-})
-.then(data => {
-    if (data.url) {
-        // Если сервер вернул URL, перенаправляем пользователя
-        window.location.href = data.url;
-    } else if (data === false) {
-        // Если сервер вернул false, показываем сообщение
-        const errorMessage = document.createElement('div');
-        errorMessage.textContent = "Пожалуйста, войдите через Telegram.";
-        errorMessage.style.color = "red";
-        errorMessage.style.fontSize = "18px";
-        errorMessage.style.textAlign = "center";
-        errorMessage.style.marginTop = "20px";
-        document.body.appendChild(errorMessage);
-    }
-})
-.catch(error => {
-    console.error("Ошибка:", error);
-    // Можно добавить обработку ошибок здесь
-});
+    alert(tg.initDataUnsafe.user.id)
     </script>
 </body>
 </html>
