@@ -3,48 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://telegram.org/js/telegram-web-app.js?59"></script>
-    <title>Document</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Telegram Mini App</title>
 </head>
 <body>
-    привет 
-    <script>    
-    tg = window.Telegram.WebApp;
-    
-    let server_url = 'https://zettadevelop.ru/auth/'
+    <div id="msg">Загрузка...</div>
 
-    //добавить обработку на сервере
+    <script>
+        const tg = window.Telegram.WebApp;
+        const server_url = 'https://zettadevelop.ru/auth/';
 
-    fetch(server_url, {
-    method: "POST",
-    body: JSON.stringify({ initData: Telegram.WebApp.initData }),
-    headers: { "Content-Type": "application/json" }
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error("Ошибка сети или сервера");
-    }
-    return response.json(); // Предполагаем, что сервер возвращает JSON
-})
-.then(data => {
-    if (data.url) {
-        // Если сервер вернул URL, перенаправляем пользователя
-        window.location.href = data.url;
-    } else if (data === false) {
-        // Если сервер вернул false, показываем сообщение
-        const errorMessage = document.createElement('div');
-        errorMessage.textContent = "Пожалуйста, войдите через Telegram.";
-        errorMessage.style.color = "red";
-        errorMessage.style.fontSize = "18px";
-        errorMessage.style.textAlign = "center";
-        errorMessage.style.marginTop = "20px";
-        document.body.appendChild(errorMessage);
-    }
-})
-.catch(error => {
-    console.error("Ошибка:", error);
-    // Можно добавить обработку ошибок здесь
-});
+        fetch(server_url, {
+            method: "POST",
+            body: JSON.stringify({ initData: tg.initData }),
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(res => res.text()) // сервер возвращает просто false или URL
+        .then(data => {
+            if (data === "false") {
+                document.body.innerHTML = "<h3>❌ Заходить можно только через Telegram Mini App</h3>";
+            } else if (data.startsWith("http")) {
+                window.location.href = data; // перекидываем
+            } else {
+                document.body.innerHTML = "<h3>⚠ Неизвестный ответ от сервера</h3>";
+            }
+        })
+        .catch(err => {
+            document.body.innerHTML = "<h3>⚠ Ошибка соединения с сервером</h3>";
+            console.error(err);
+        });
     </script>
 </body>
 </html>
